@@ -1,0 +1,94 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Chat Room</title>
+    <style>
+      :root{--accent:#ff4d94;--bg1:#0f1724;--bg2:#0b1020}
+      *{box-sizing:border-box}
+      html,body{height:100%}
+      body {
+        margin:0; font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+        background: radial-gradient(1200px 600px at 10% 10%, rgba(255,77,148,0.12), transparent),
+                    linear-gradient(120deg,var(--bg1),var(--bg2));
+        color:#e6eef8; display:flex; align-items:center; justify-content:center; padding:28px;
+      }
+      .app { width:100%; max-width:980px; background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)); border-radius:14px; padding:18px; box-shadow:0 10px 40px rgba(2,6,23,0.6); position:relative; overflow:hidden }
+      header{display:flex; gap:12px; align-items:center; margin-bottom:12px}
+      header h2{margin:0; letter-spacing:0.6px}
+      .controls{margin-left:auto; display:flex; gap:8px; align-items:center}
+      input,button{padding:8px 10px; border-radius:8px; border:0; outline:none}
+      input{background:rgba(255,255,255,0.04); color:inherit}
+      button{background:var(--accent); color:#081020; font-weight:700; cursor:pointer; box-shadow:0 6px 18px rgba(255,77,148,0.12)}
+      #main{display:flex; gap:12px}
+      #messages{flex:1; height:420px; overflow:auto; padding:12px; border-radius:10px; background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); box-shadow:inset 0 1px 0 rgba(255,255,255,0.02)}
+      .msg{margin:10px 0; display:flex; gap:10px; align-items:flex-end; opacity:0; transform:translateY(8px); animation:pop .35s forwards}
+      @keyframes pop{to{opacity:1; transform:none}}
+      .avatar{width:44px; height:44px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; color:#071226; flex-shrink:0; box-shadow:0 6px 18px rgba(2,6,23,0.6)}
+      .bubble{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); padding:10px 12px; border-radius:12px; max-width:78%; box-shadow:0 6px 20px rgba(2,6,23,0.5)}
+      .meta{font-size:12px; color:#bcd4ef; margin-bottom:6px}
+      .meta small{color:#9fb2d9; margin-left:8px}
+      .info{color:#9fb2d9; font-style:italic}
+      .send-row{margin-top:12px; display:flex; gap:8px}
+      .send-row input{flex:1}
+      .send-btn{position:relative; overflow:visible}
+      .send-btn:after{content:''; position:absolute; inset:-6px; border-radius:12px; box-shadow:0 0 28px rgba(255,77,148,0.18); opacity:0; transform:scale(0.98); transition:opacity .25s, transform .25s}
+      .send-btn:active:after{opacity:1; transform:scale(1)}
+      .reactions{display:flex; gap:8px; margin-top:8px}
+      .reaction{background:rgba(255,255,255,0.03); padding:6px 8px; border-radius:999px; cursor:pointer; user-select:none}
+      /* floating decor */
+      .blobs{position:absolute; inset:0; pointer-events:none}
+      .blob{position:absolute; width:260px; height:260px; filter:blur(48px); opacity:0.12; transform:translate3d(0,0,0)}
+      .blob.a{background:radial-gradient(circle at 30% 30%, #ff6fa7, transparent 40%); left:-40px; top:-60px}
+      .blob.b{background:radial-gradient(circle at 70% 70%, #4dd7ff, transparent 40%); right:-80px; bottom:-40px}
+      .confetti-canvas{position:fixed; left:0; top:0; width:100%; height:100%; pointer-events:none}
+    </style>
+  </head>
+  <body>
+    <div class="app">
++    <header>
++      <h2>✨ Crazy Chat</h2>
++      <div class="controls">
++        <label>Room: <input id="room" placeholder="room1" /></label>
++        <label>Name: <input id="name" placeholder="Your name" /></label>
++        <button id="join">Join</button>
++      </div>
++    </header>
+
+    <div id="main">
+      <div id="messages" aria-live="polite"></div>
+      <div style="width:220px; padding:8px">
+        <div class="info">Active features:</div>
+        <ul>
+          <li>Animated bubbles</li>
+          <li>Avatars & color</li>
+          <li>Reactions</li>
+          <li>Confetti & sound</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="send-row">
+      <input id="text" placeholder="Type a message..." />
+      <button id="send" class="send-btn">Send</button>
+    </div>
+
+    <div class="reactions" aria-hidden="true" style="display:none">
+      <div class="reaction">❤️</div>
+      <div class="reaction">😂</div>
+      <div class="reaction">👍</div>
+      <div class="reaction">🎉</div>
+    </div>
+
+    <div class="blobs">
+      <div class="blob a"></div>
+      <div class="blob b"></div>
+    </div>
+
+    <canvas id="confetti" class="confetti-canvas"></canvas>
++    </div>
+
+    <script src="client.js"></script>
+  </body>
+</html>
